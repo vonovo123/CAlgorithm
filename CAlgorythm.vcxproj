@@ -24,6 +24,7 @@
     <ProjectGuid>{ace6a5fe-4e38-4ca1-a7d8-159f2180cd6d}</ProjectGuid>
     <RootNamespace>CAlgorythm</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>CAlgorithm</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -139,7 +140,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="deck.c" />
+    <ClCompile Include="divideNconquer.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="queue.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CAlgorithm.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="deck.h" />
+    <ClInclude Include="divideNconquer.h" />
+    <ClInclude Include="queue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
