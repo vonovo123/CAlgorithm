@@ -10,28 +10,42 @@ void conqure(int n, int xStart, int yStart, int** array, int* result) {
     int sColor =   *(*(array + yStart) + xStart);
     //모든색이 같은지 판별 플래그
     int isSameColor = 0;
-    //1개일때는 무조건 리턴
+    //1개탐색(마지막)이면 해당타일의 색에 + 1 한 후 탐색 종료
     if (n == 1) {
         *(result + sColor) += 1;
         return;
     }
+    //y시작점 부터 n 개
     for (int i = yStart; i < yStart + n; i++) {
+        //x시작점 부터 n개 탐색하면서 모두 같은색 타일인지 확인
         for (int j = xStart; j < xStart + n; j++) {
+            //하나라도 색이 다르면
             if (sColor != *(*(array + i) + j)) {
+                //판별 플레그를 1로 바꾸고
                 isSameColor = 1;
+                //탐색 종료
                 break;
             }
         }
+        //판별 플레그가 1이면 더이상 탐색하지 않고 종료
         if (isSameColor == 1) break;
     }
+    //탐색한 타일이 모두 같은 색이면
     if (isSameColor == 0) {
+        //해당 타일색에 +1 하고 탐색 종료
         *(result + sColor) += 1;
     }
+    //영역의 타일색이 하나라도 다르면
     else {
+        //해당영역 분할탐색
         int nSize = n / 2;
+        //일사분면에서 n/2 만큼
         conqure(nSize, xStart, yStart, array, result);
+        //이사분면에서 n/2 만큼
         conqure(nSize, xStart + nSize, yStart, array, result);
+        //삼사분면에서 n/2만큼
         conqure(nSize, xStart, yStart + nSize, array, result);
+        //사사분면에서 n/2만큼
         conqure(nSize, xStart + nSize, yStart + nSize, array, result);
     }
 }
