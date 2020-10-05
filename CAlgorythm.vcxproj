@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="circularQueue.c" />
     <ClCompile Include="deck.c" />
     <ClCompile Include="divideNconquer.c" />
     <ClCompile Include="main.c" />
@@ -149,6 +150,7 @@
     <ResourceCompile Include="CAlgorithm.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="circularQueue.h" />
     <ClInclude Include="deck.h" />
     <ClInclude Include="divideNconquer.h" />
     <ClInclude Include="queue.h" />
