@@ -47,6 +47,60 @@ void conqure(int n, int xStart, int yStart, int** array, int* result) {
         conqure(nSize, xStart + nSize, yStart + nSize, array, result);
     }
 }
+/// <summary>
+/// 이차원 분할정복
+/// </summary>
+/// <param name="n">분할후 한변의 길이</param>
+/// <param name="xStart">x좌표</param>
+/// <param name="yStart">y좌표</param>
+/// <param name="array">이차원 배열</param>
+void conqure1992(int n, int xStart, int yStart, int** array) {
+    //시작점의 숫자
+    int s = *(*(array + yStart) + xStart);
+    //모든색이 같은지 판별
+    int isSameNum = 0;
+    //모든색이 같으면 0 하나라도 다르면 1
+    for (int i = yStart; i < yStart + n; i++) {
+        for (int j = xStart; j < xStart + n; j++) {
+            if (s != *(*(array + i) + j)) {
+                isSameNum = 1;
+                break;
+            }
+        }
+        if (isSameNum == 1) break;
+    }
+    //모두 같은 색이면 해당하는 수(0:검정 1 흰)을 출력하고 리턴
+    if (isSameNum == 0) {
+        printf("%d", s);
+        return;
+    }
+    //하나라도 다른색이 있으면
+    else {
+        //분할한 화면이 2*2일때
+        if (n == 2) {
+            printf("(");
+            //n이 2일때는 2*2 분면의 숫자 차례로 출력하고 리턴
+            for (int i = yStart; i < yStart + n; i++) {
+                for (int j = xStart; j < xStart + n; j++) {
+                    printf("%d", *(*(array + i) + j));
+                }
+            }
+            printf(")");
+            //printf("\n");
+            return;
+        }
+        //2*2 이상일때
+        else {
+            int nSize = n / 2;
+            printf("(");
+            conqure1992(nSize, xStart, yStart, array);
+            conqure1992(nSize, xStart + nSize, yStart, array);
+            conqure1992(nSize, xStart, yStart + nSize, array);
+            conqure1992(nSize, xStart + nSize, yStart + nSize, array);
+            printf(")");
+        }
+    }
+}
 
 //n : 정사각형의 가로세로 길이
 void solve2630(){
@@ -69,4 +123,8 @@ void solve2630(){
     printf("%d\n", *(result + 0));
     printf("%d\n", *(result + 1));
 
+}
+
+void solve1992(int n, int** array) {
+    conqure1992(n, 0, 0, array);
 }
