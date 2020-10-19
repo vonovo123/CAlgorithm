@@ -102,6 +102,59 @@ void conqure1992(int n, int xStart, int yStart, int** array) {
     }
 }
 
+//n : 잘린 정사각형의 크기
+//*start 시작점
+//**array 전체 정사각형
+//*result 결과를 담은 배열
+void conqure1780(int n, int xStart, int yStart, int** array, int* result) {
+    //시작점의 숫자
+    int s = *(*(array + yStart) + xStart);
+    //모든색이 같은지 판별 플래그
+    int isSameNum = 0;
+    for (int i = yStart; i < yStart + n; i++) {
+        for (int j = xStart; j < xStart + n; j++) {
+            if (s != *(*(array + i) + j)) {
+                isSameNum = 1;
+                break;
+            }
+        }
+        if (isSameNum == 1) break;
+    }
+    if (isSameNum == 0) {
+        *(result + (s + 1)) += 1;
+        return;
+    }
+    else {
+        int nSize = n / 3;
+        conqure1780(nSize, xStart, yStart, array, result);
+        conqure1780(nSize, xStart + nSize, yStart, array, result);
+        conqure1780(nSize, xStart + nSize + nSize, yStart, array, result);
+
+        conqure1780(nSize, xStart, yStart + nSize, array, result);
+        conqure1780(nSize, xStart + nSize, yStart + nSize, array, result);
+        conqure1780(nSize, xStart + nSize + nSize, yStart + nSize, array, result);
+
+        conqure1780(nSize, xStart, yStart + nSize + nSize, array, result);
+        conqure1780(nSize, xStart + nSize, yStart + nSize + nSize, array, result);
+        conqure1780(nSize, xStart + nSize + nSize, yStart + nSize + nSize, array, result);
+    }
+}
+
+long long int conquer1629(int a, int b, int c) {
+    //기저 b가 1일때(a 자신일때) c로 나눈 나머지 리턴
+    if (b == 1) return a % c;
+    //우선 b를 절반으로 나누어 결과값 도출
+    long long int result = conquer1629(a, b / 2, c);
+    //a를 b/2번 곱한값을 c 로 나눈 결과값을 제곱하여 다시 c로 나누면 a를 b번 곱해 c로 나눈 결과값과 같다.
+    result = (result * result) % c;
+    //단 b가 홀수일 경우, 한번더 a를 곱하고 그 값을 c로 나눈 값과 같다.
+    if (b % 2) {
+        result = (result * a) % c;
+    }
+    return result;
+}
+
+
 //n : 정사각형의 가로세로 길이
 void solve2630(){
     int n = 0;
@@ -127,4 +180,19 @@ void solve2630(){
 
 void solve1992(int n, int** array) {
     conqure1992(n, 0, 0, array);
+}
+
+void solve1780(int n, int** array) {
+    int* result = malloc(sizeof(int) * 3);
+    *(result) = 0; //0 -1
+    *(result + 1) = 0; //1 0
+    *(result + 2) = 0;//2 1
+    conqure1780(n, 0, 0, array, result);
+    for (int i = 0; i <= 2; i++) {
+        printf("%d\n", *(result + i));
+    }
+}
+long long int solve1629(long long int a, long long int b, long long int c) {
+    long long int result = conquer1629(a, b, c);
+    return result;
 }

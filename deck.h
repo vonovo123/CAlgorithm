@@ -4,6 +4,8 @@ typedef struct _Deck {
     int front;
     int back;
 }Deck;
+#define MIN(a,b)((a) < (b) ? (a) : (b))
+#define Max 100000
 
 //Deck의 크기
 int d_size(Deck* d);
@@ -21,5 +23,8 @@ int pop_back(Deck* d);
 void push_back(Deck* d, int in);
 //Deck의 앞으로 넣기
 void push_front(Deck* d, int in);
+//Deck 요소 출력
+void d_print(Deck* d, int isR);
 //Deck초기화
 void d_init(Deck* d, int max);
+void solve5430();

@@ -12,8 +12,6 @@
 #include <stdlib.h>
 #include "deck.h"
 
-#define MIN(a,b)((a) < (b) ? (a) : (b))
-#define Max 10000
 
 //Deck의 크기는
 int d_size(Deck* d) {
@@ -33,7 +31,7 @@ int d_front(Deck* d) {
     return (d_empty(d) == 1) ? -1 : *(d->mem + ((d->front) + 1));
 }
 //Deck의 앞으로 빼내기
-int pop_front(Deck* d) {
+int d_pop_front(Deck* d) {
     //Deck이 비어있으면 -1을 리턴
     if (d_empty(d) == 1) {
         return -1;
@@ -44,7 +42,7 @@ int pop_front(Deck* d) {
     return re;
 }
 //Deck의 뒤로 빼내기
-int pop_back(Deck* d) {
+int d_pop_back(Deck* d) {
     //Deck이 비어있으면 -1을 리턴
     if (d_empty(d) == 1) {
         return -1;
@@ -55,7 +53,7 @@ int pop_back(Deck* d) {
     return re;
 }
 //Deck의 뒤로 넣기
-void push_back(Deck* d, int in) {
+void d_push_back(Deck* d, int in) {
     //deck의 마지막요소의 위치 + 1이 최대크기와 같으면 FULL
     if ((d->back) + 1 == Max) {
         printf("Deck overflow");
@@ -65,7 +63,7 @@ void push_back(Deck* d, int in) {
     *((d->mem) + ++(d->back)) = in;
 }
 //Deck의 앞으로 넣기
-void push_front(Deck* d, int in) {
+void d_push_front(Deck* d, int in) {
     //맨마지막 요소의 위치 + 1 이 최대크기와 같으면 FULL
     if ((d->back) + 1 == Max) {
         printf("Deck overflow");
@@ -91,6 +89,85 @@ void push_front(Deck* d, int in) {
         (d->front)--;
     }
 };
+
+void d_print(Deck* d, int isR) {
+    printf("[");
+    if (isR == 0) {//정방향
+        for (int i = d->front + 1; i <= d->back; i++) {
+            if (i < d->back) printf("%d,", *(d->mem + i));
+            else printf("%d", *(d->mem + i));
+        }
+    }
+    else {//역방향
+        for (int i = d->back; i >= d->front + 1; i--) {
+            if (i > d->front + 1) printf("%d,", *(d->mem + i));
+            else printf("%d", *(d->mem + i));
+        }
+    }
+
+    printf("]\n");
+}
+
+void solve5430() {
+    //테스트케이스의수
+    int t = 0;
+    scanf("%d", &t);
+    //테스트케이스만큼 반복진행
+    for (int i = 0; i < t; i++) {
+        //Deck 할당
+        Deck* d = malloc(sizeof(Deck));
+        //Deck 초기화
+        d_init(d, Max);
+        //사용할 문자열 메모리 할당
+        char* p = malloc(sizeof(char) * 100000 + 1);
+        //문자열 0으로 초기화
+        for (int i = 0; i < 100000; i++) {
+            *(p + i) = 0;
+        }
+        //커맨드 문자열 scan
+        scanf("%s", p);
+
+        //입력받을 숫자의 개수
+        int n = 0;
+        scanf("%d\n", &n);
+        char s;
+        char dot;
+        //덱요소
+        int num;
+        scanf("%c", &s); // [
+        for (int i = 0; i < n; i++) {
+            // i , or i]
+            scanf("%d%c", &num, &dot);
+            d_push_back(d, num);
+        }
+        //turn
+        int i = 0;
+        char c;
+        int isR = 0;//0 정방향 1 역방향
+        int isE = 0;
+        while ((c = *(p + i)) == 'D' || (c = *(p + i)) == 'R') {
+            if (c == 'R') {//reverse
+                isR = !isR;
+            }
+            else {//delete
+                if (d_size(d) == 0) {
+                    isE = 1;
+                    break;
+                }
+                if (isR) d_pop_back(d);
+                else d_pop_front(d);
+            }
+            i++;
+        }
+        if (isE) printf("error\n");
+        else d_print(d, isR);
+
+
+        free(p);
+        free(d);
+    }
+
+}
 
 void d_init(Deck* d, int max) {
     d->mem = (int*)malloc(sizeof(int) * max);
